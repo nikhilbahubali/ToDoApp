@@ -29,7 +29,7 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough 
 
-Here's a walkthrough of implemented user stories: [GIF walkthrough](http://i.imgur.com/2PFQPl4)
+Here's a walkthrough of implemented user stories: [Click GIF walkthrough](http://i.imgur.com/2PFQPl4)
 
 ![Screenshot]\(http://i.imgur.com/2PFQPl4)
 ![Screenshot](http://i.imgur.com/2PFQPl4?raw=true)
