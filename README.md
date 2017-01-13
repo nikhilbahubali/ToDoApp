@@ -32,6 +32,7 @@ The following **additional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 ![Screenshot]\(http://i.imgur.com/2PFQPl4)
+![Screenshot](http://i.imgur.com/2PFQPl4?raw=true)
 
 <img src='http://i.imgur.com/2PFQPl4' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
