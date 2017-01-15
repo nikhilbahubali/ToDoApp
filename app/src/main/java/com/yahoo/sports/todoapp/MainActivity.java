@@ -21,30 +21,13 @@ public class MainActivity extends AppCompatActivity {
     private ListView lvItems;
     private EditText etAddItem;
 
-    private void populateListItems() {
-        readItems();
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
-        lvItems.setAdapter(itemsAdapter);
-    }
+    public void onAdd(View view) {
+        // update listview
+        itemsAdapter.add(etAddItem.getText().toString());
+        etAddItem.setText("");
 
-    private void readItems() {
-        File filesDir = getFilesDir();
-        File file = new File(filesDir, "todo.txt");
-        try {
-            items = new ArrayList<>(FileUtils.readLines(file));
-        } catch (IOException e) {
-            items = new ArrayList<>();
-        }
-    }
-
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File file = new File(filesDir, "todo.txt");
-        try {
-            FileUtils.writeLines(file, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // serialize
+        writeItems();
     }
 
     @Override
@@ -79,23 +62,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // initialize
         populateListItems();
-    }
-
-    public void onAdd(View view) {
-        itemsAdapter.add(etAddItem.getText().toString());
-        etAddItem.setText("");
-        writeItems();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // extract returned result
         String modifiedItemText = data.getStringExtra("item");
         int itemPosition = data.getIntExtra("position", 0);
 
+        // update UI to reflect action
         items.remove(itemPosition);
         items.add(itemPosition, modifiedItemText);
         itemsAdapter.notifyDataSetChanged();
+
+        // serialize
         writeItems();
+    }
+
+    private void populateListItems() {
+        // deserialize
+        readItems();
+
+        // update listview
+        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        lvItems.setAdapter(itemsAdapter);
+    }
+
+    private void readItems() {
+        File filesDir = getFilesDir();
+        File file = new File(filesDir, "todo.txt");
+        try {
+            items = new ArrayList<>(FileUtils.readLines(file));
+        } catch (IOException e) {
+            items = new ArrayList<>();
+        }
+    }
+
+    private void writeItems() {
+        File filesDir = getFilesDir();
+        File file = new File(filesDir, "todo.txt");
+        try {
+            FileUtils.writeLines(file, items);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -24,10 +24,12 @@ public class EditItemActivity extends AppCompatActivity {
     }
 
     public void onSave(View view) {
+        // create intent with result to return
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("item", etEditItem.getText().toString());
         intent.putExtra("position", itemPosition);
 
+        // set the result for caller activity
         setResult(0, intent);
         finish();
     }
