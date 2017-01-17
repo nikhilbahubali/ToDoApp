@@ -9,11 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<String> items;
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         etAddItem.setText("");
 
         // serialize
-        writeItems();
+        writeItemsToDatabase();
     }
 
     @Override
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
-                writeItems();
+                removeItemFromDatabase(position);
                 return true;
             }
         });
@@ -78,19 +81,47 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter.notifyDataSetChanged();
 
         // serialize
-        writeItems();
+        writeItemsToDatabase();
     }
 
     private void populateListItems() {
         // deserialize
-        readItems();
+        readItemsFromDatabase();
 
         // update listview
         itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
     }
 
-    private void readItems() {
+    private void removeItemFromDatabase(int position) {
+        ToDoItem toDoItem = new ToDoItem();
+        toDoItem.setId(position);
+        toDoItem.delete();
+    }
+
+    private void readItemsFromDatabase() {
+        // read from database
+        items = new ArrayList<>();
+        List<ToDoItem> todoItems = SQLite.select().from(ToDoItem.class).queryList();
+        for (ToDoItem todoItem : todoItems) {
+            items.add(todoItem.getItemName());
+        }
+    }
+
+    private void writeItemsToDatabase() {
+        // write to database
+        int id = 0;
+        for (String item: items) {
+            ToDoItem todoItem = new ToDoItem();
+            todoItem.setId(id);
+            todoItem.setItemName(item);
+            todoItem.save();
+            id++;
+        }
+    }
+
+    private void readItemsFromFile() {
+        // read from file
         File filesDir = getFilesDir();
         File file = new File(filesDir, "todo.txt");
         try {
@@ -100,7 +131,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void writeItems() {
+    private void writeItemsToFile() {
+        // write to file
         File filesDir = getFilesDir();
         File file = new File(filesDir, "todo.txt");
         try {
