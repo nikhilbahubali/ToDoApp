@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                removeItemFromDatabase(items.get(position));
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
-                removeItemFromDatabase(position);
                 return true;
             }
         });
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         int itemPosition = data.getIntExtra("position", 0);
 
         // update UI to reflect action
+        removeItemFromDatabase(items.get(itemPosition));
         items.remove(itemPosition);
         items.add(itemPosition, modifiedItemText);
         itemsAdapter.notifyDataSetChanged();
@@ -93,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setAdapter(itemsAdapter);
     }
 
-    private void removeItemFromDatabase(int position) {
+    private void removeItemFromDatabase(String itemText) {
         ToDoItem toDoItem = new ToDoItem();
-        toDoItem.setId(position);
+        toDoItem.setItemName(itemText);
         toDoItem.delete();
     }
 
@@ -113,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         int id = 0;
         for (String item: items) {
             ToDoItem todoItem = new ToDoItem();
-            todoItem.setId(id);
             todoItem.setItemName(item);
             todoItem.save();
             id++;
