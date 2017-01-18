@@ -10,6 +10,6 @@ import com.raizlabs.android.dbflow.annotation.Database;
 @Database(name = ToDoAppDatabase.NAME, version = ToDoAppDatabase.VERSION)
 
 public class ToDoAppDatabase {
-    public static final String NAME = "ToDoAppDatabaseV1";
+    public static final String NAME = "ToDoAppDatabaseV9";
     public static final int VERSION = 1;
 }

@@ -9,7 +9,7 @@ import android.widget.EditText;
 public class EditItemActivity extends AppCompatActivity {
 
     private String itemText;
-    private int itemPosition;
+    private long itemId;
     private EditText etEditItem;
 
     @Override
@@ -18,7 +18,7 @@ public class EditItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_item);
 
         itemText = getIntent().getStringExtra("item");
-        itemPosition = getIntent().getIntExtra("position", 0);
+        itemId = getIntent().getLongExtra("id", 0);
         etEditItem = (EditText)findViewById(R.id.etEditItem);
         etEditItem.setText(itemText);
     }
@@ -26,8 +26,9 @@ public class EditItemActivity extends AppCompatActivity {
     public void onSave(View view) {
         // create intent with result to return
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("item", etEditItem.getText().toString());
-        intent.putExtra("position", itemPosition);
+        intent.putExtra("olditem", itemText);
+        intent.putExtra("modifieditem", etEditItem.getText().toString());
+        intent.putExtra("id", itemId);
 
         // set the result for caller activity
         setResult(0, intent);
