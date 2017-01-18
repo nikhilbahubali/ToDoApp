@@ -31,13 +31,19 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.todo_item, parent, false);
         }
 
+        // populate views rows in listview
         TextView tvItemName = (TextView)convertView.findViewById(R.id.itemName);
         tvItemName.setText(toDoItem.getItemName());
+        TextView tvItemPriority = (TextView)convertView.findViewById(R.id.itemPriority);
+        tvItemPriority.setText(toDoItem.getPriority().toString());
+
+        // set todoitem object for retrieval in click handler
         tvItemName.setTag(toDoItem);
 
         tvItemName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                // get view's associated object, remove from db
                 ToDoItem deleteItem = (ToDoItem) v.getTag();
                 removeItemFromDatabase(deleteItem);
 
@@ -57,8 +63,10 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
         tvItemName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // get view's associated object
                 ToDoItem item = (ToDoItem) v.getTag();
 
+                // fill intent data to pass to edit activity
                 Intent intent = new Intent(getContext(), EditItemActivity.class);
                 intent.putExtra("item", item.getItemName());
                 intent.putExtra("id", item.getId());
@@ -67,9 +75,6 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
                 mainActivity.startActivityForResult(intent, 0);
             }
         });
-
-        TextView tvItemPriority = (TextView)convertView.findViewById(R.id.itemPriority);
-        tvItemPriority.setText(toDoItem.getPriority().toString());
 
         return convertView;
     }

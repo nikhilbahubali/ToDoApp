@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 public class EditItemActivity extends AppCompatActivity {
-
     private String itemText;
     private long itemId;
     private ToDoItem.Priority priority;
@@ -21,19 +20,19 @@ public class EditItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
 
+        // fetch intent data
         itemText = getIntent().getStringExtra("item");
         itemId = getIntent().getLongExtra("id", 0);
         priority = ToDoItem.Priority.valueOf(getIntent().getStringExtra("priority"));
 
+        // populate edit UI
         etEditItem = (EditText)findViewById(R.id.etEditItem);
         etEditItem.setText(itemText);
-
         spPriority = (Spinner)findViewById(R.id.spPriority);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.priorities_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spPriority.setAdapter(adapter);
-
         spPriority.setSelection(adapter.getPosition(priority.toString()));
     }
 
