@@ -11,10 +11,25 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 @Table(database = ToDoAppDatabase.class)
 public class ToDoItem extends BaseModel {
+    public enum Priority {None, Low, Medium, High};
 
     @Column
     @PrimaryKey
+    public long id;
+
+    @Column
     public String itemName;
+
+    @Column
+    public Priority priority;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getItemName() {
         return itemName;
@@ -22,5 +37,13 @@ public class ToDoItem extends BaseModel {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 }

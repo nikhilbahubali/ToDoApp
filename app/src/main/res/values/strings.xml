@@ -4,4 +4,8 @@
     <string name="add_item">Add</string>
     <string name="edit_item_below">Edit Item Below:</string>
     <string name="save_button">Save</string>
+    <string name="PriorityNone">None</string>
+    <string name="PriorityLow">Low</string>
+    <string name="PriorityHigh">High</string>
+    <string name="PriorityMedium">Medium</string>
 </resources>
