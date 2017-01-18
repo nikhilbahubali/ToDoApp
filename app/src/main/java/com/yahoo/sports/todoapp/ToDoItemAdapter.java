@@ -62,11 +62,14 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
                 Intent intent = new Intent(getContext(), EditItemActivity.class);
                 intent.putExtra("item", item.getItemName());
                 intent.putExtra("id", item.getId());
+                intent.putExtra("priority", item.getPriority().toString());
 
                 mainActivity.startActivityForResult(intent, 0);
             }
         });
 
+        TextView tvItemPriority = (TextView)convertView.findViewById(R.id.itemPriority);
+        tvItemPriority.setText(toDoItem.getPriority().toString());
 
         return convertView;
     }

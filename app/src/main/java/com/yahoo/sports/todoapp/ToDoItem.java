@@ -11,7 +11,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 @Table(database = ToDoAppDatabase.class)
 public class ToDoItem extends BaseModel {
-    public enum Priority {NONE, LOW, MEDIUM, HIGH};
+    public enum Priority {None, Low, Medium, High};
 
     @Column
     @PrimaryKey

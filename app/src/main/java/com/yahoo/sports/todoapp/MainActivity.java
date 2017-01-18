@@ -13,8 +13,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import java.util.Date;
 import java.util.List;
 
-import static com.yahoo.sports.todoapp.ToDoItem.Priority.LOW;
-import static com.yahoo.sports.todoapp.ToDoItem.Priority.MEDIUM;
+import static com.yahoo.sports.todoapp.ToDoItem.Priority.None;
 
 public class MainActivity extends AppCompatActivity {
     private List<ToDoItem> toDoItems;
@@ -107,15 +106,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // extract returned result
+        long itemId = data.getLongExtra("id", 0);
         String oldItemText = data.getStringExtra("olditem");
         String modifiedItemText = data.getStringExtra("modifieditem");
-        long itemId = data.getLongExtra("id", 0);
+        String priority = data.getStringExtra("priority");
 
         // write to database
         ToDoItem modifiedItem = new ToDoItem();
         modifiedItem.setId(itemId);
         modifiedItem.setItemName(modifiedItemText);
-        modifiedItem.setPriority(MEDIUM);
+        modifiedItem.setPriority(ToDoItem.Priority.valueOf(priority));
         modifiedItem.save();
 
         ToDoItem oldItem = new ToDoItem();
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         ToDoItem toDoItem = new ToDoItem();
         toDoItem.setId(new Date().getTime());
         toDoItem.setItemName(etAddItem.getText().toString());
-        toDoItem.setPriority(LOW);
+        toDoItem.setPriority(None);
         // update listview
         todoItemsAdapter.add(toDoItem);
         etAddItem.setText("");
