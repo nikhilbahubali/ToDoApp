@@ -1,7 +1,8 @@
 package com.yahoo.sports.todoapp;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,13 +67,14 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
                 // get view's associated object
                 ToDoItem item = (ToDoItem) v.getTag();
 
-                // fill intent data to pass to edit activity
-                Intent intent = new Intent(getContext(), EditItemActivity.class);
-                intent.putExtra("item", item.getItemName());
-                intent.putExtra("id", item.getId());
-                intent.putExtra("priority", item.getPriority().toString());
+                DialogEditItem dialogEditItem = DialogEditItem.newInstance(mainActivity);
+                Bundle args = dialogEditItem.getArguments();
+                args.putString("item", item.getItemName());
+                args.putLong("id", item.getId());
+                args.putString("priority", item.getPriority().toString());
 
-                mainActivity.startActivityForResult(intent, 0);
+                FragmentManager fm = mainActivity.getSupportFragmentManager();
+                dialogEditItem.show(fm, "dialogedititem");
             }
         });
 
