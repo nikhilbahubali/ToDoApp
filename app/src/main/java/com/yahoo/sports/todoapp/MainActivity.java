@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.yahoo.sports.todoapp.ToDoItem.Priority.None;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DialogEditItem.EditItemDialogListener {
     private List<ToDoItem> toDoItems;
     public ToDoItemAdapter todoItemsAdapter;
     private ListView lvItems;
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+/*
         // extract returned result
         long itemId = data.getLongExtra("id", 0);
         String oldItemText = data.getStringExtra("olditem");
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+*/
     }
 
     public void onAdd(View view) {
@@ -91,5 +93,37 @@ public class MainActivity extends AppCompatActivity {
 
         // serialize
         toDoItem.save();
+    }
+
+    @Override
+    public void OnFinishedEditItem(Bundle args) {
+        // extract returned result
+        long itemId = args.getLong("id", 0);
+        String oldItemText = args.getString("olditem");
+        String modifiedItemText = args.getString("modifieditem");
+        String priority = args.getString("priority");
+
+        // write to database
+        ToDoItem modifiedItem = new ToDoItem();
+        modifiedItem.setId(itemId);
+        modifiedItem.setItemName(modifiedItemText);
+        modifiedItem.setPriority(ToDoItem.Priority.valueOf(priority));
+        modifiedItem.save();
+
+        // old item to replace with modified
+        ToDoItem oldItem = new ToDoItem();
+        oldItem.setId(itemId);
+        oldItem.setItemName(oldItemText);
+
+        // update UI to reflect action
+        for (int i = 0; i < todoItemsAdapter.getCount(); i++) {
+            ToDoItem item = todoItemsAdapter.getItem(i);
+            if (item.getId() == itemId) {
+                todoItemsAdapter.remove(item);
+                todoItemsAdapter.insert(modifiedItem, i);
+                todoItemsAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 }
